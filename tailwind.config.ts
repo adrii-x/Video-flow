@@ -1,6 +1,7 @@
 
 import type { Config } from "tailwindcss";
 //
+//
 export default {
 	darkMode: ["class"],
 	content: [
@@ -73,6 +74,8 @@ export default {
 					'error': '#EF4444',
 					'text': '#F8FAFC',
 					'text-subtle': '#94A3B8',
+					'text-A': '#46484E',
+
 				},
 			},
 			fontFamily: {

@@ -1,9 +1,12 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Play, Upload, Plus, Film, Clock, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import UploadArea from "@/components/upload/UploadArea";
 import Header from "@/components/navigation/Header";
+import { toast } from "sonner";
 
 // Mock data for project
 const recentProjects = [
@@ -35,19 +38,78 @@ const HomePage = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [activeTab, setActiveTab] = useState("recent");
 
+  const handleFileUpload = (files: File[]) => {
+    setUploadedFiles(prev => [...prev, ...files]);
+    
+    // Store uploaded files in localStorage
+    try {
+      const existingFiles = JSON.parse(localStorage.getItem('uploadedMediaFiles') || '[]');
+      const newFilesData = files.map(file => ({
+        id: `file-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        name: file.name,
+        type: file.type.startsWith('video/') ? 'video' : 
+              file.type.startsWith('audio/') ? 'audio' : 
+              file.type.startsWith('image/') ? 'image' : 'other',
+        size: file.size,
+        lastModified: file.lastModified,
+        url: URL.createObjectURL(file)
+      }));
+      
+      localStorage.setItem('uploadedMediaFiles', JSON.stringify([...existingFiles, ...newFilesData]));
+    } catch (error) {
+      console.error("Error storing files in localStorage:", error);
+    }
+    
+    toast.success(`${files.length} file(s) uploaded successfully!`);
+  };
+
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
+  
+  const handleNewProject = () => {
+    toast.success("Creating new project");
+    navigate('/editor');
+  };
 
+  const navigateToSection = (section: string) => {
+    switch (section) {
+      case "upload":
+        navigate('/upload');
+        toast.info("Navigating to upload page");
+        break;
+      case "edit":
+        navigate('/editor');
+        toast.info("Navigating to editor");
+        break;
+      case "preview":
+        navigate('/export');
+        toast.info("Navigating to export page");
+        break;
+      default:
+        break;
+    }
+  };
+  
+  const handleProjectClick = (project: any) => {
+    // Store selected project in localStorage for use in editor
+    localStorage.setItem('selectedProject', JSON.stringify(project));
+    navigate('/editor');
+    toast.success(`Opening project: ${project.title}`);
+  };
+  
   return (
     <div className="min-h-screen flex">
+      
       <div className="flex-1">
         <Header />
+        
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-heading font-semibold">Dashboard</h1>
             <Button 
               className="flex items-center gap-2 bg-gradient-to-r from-editor-primary to-editor-secondary hover:bg-editor-primary/90 hover:to-editor-secondary/90 text-white"
+              onClick={handleNewProject}
             >
               <Plus size={16} />
               <span>New Project</span>
@@ -59,9 +121,32 @@ const HomePage = () => {
             <div className="lg:col-span-2">
               <div className="editor-panel">
                 <h2 className="text-xl font-heading font-semibold mb-4">Quick Upload</h2>
+                <UploadArea onFileSelected={handleFileUpload} />
+                
+                {uploadedFiles.length > 0 && (
+                  <div className="mt-4">
+                    <h3 className="text-sm font-medium mb-2 text-editor-text-subtle">Recently Uploaded</h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {uploadedFiles.map((file, index) => (
+                        <div key={index} className="bg-editor-surface/50 p-2 rounded-md">
+                          <div className="aspect-video bg-editor-surface/80 rounded flex items-center justify-center mb-2">
+                            <Film size={24} className="text-editor-text-subtle" />
+                          </div>
+                          <p className="text-sm truncate">{file.name}</p>
+                          <p className="text-xs text-editor-text-subtle">{(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
                 <div className="mt-6 flex justify-end">
                   <Button 
                     className="flex items-center gap-2 bg-editor-text/5 text-editor-primary hover:bg-gradient-to-r hover:from-editor-primary hover:to-editor-secondary hover:text-white transition-colors"
+                    onClick={() => {
+                      toast.success("Starting editor");
+                      navigate('/editor');
+                    }}
                   >
                     <Play size={16} />
                     <span>Start Editing</span>
@@ -75,19 +160,28 @@ const HomePage = () => {
               <div className="editor-panel">
                 <h2 className="text-xl font-heading font-semibold mb-4">Getting Started</h2>
                 <ul className="space-y-3">
-                  <li className="flex items-center gap-3 p-2 rounded-md hover:bg-editor-text/5 transition-colors cursor-pointer">
+                  <li 
+                    className="flex items-center gap-3 p-2 rounded-md hover:bg-editor-text/5 transition-colors cursor-pointer"
+                    onClick={() => navigateToSection('upload')}
+                  >
                     <div className="p-2 bg-editor-primary/10 rounded-full">
                       <Upload size={16} className="text-editor-primary" />
                     </div>
                     <span className="text-sm">Upload your media</span>
                   </li>
-                  <li className="flex items-center gap-3 p-2 rounded-md hover:bg-editor-text/5 transition-colors cursor-pointer">
+                  <li 
+                    className="flex items-center gap-3 p-2 rounded-md hover:bg-editor-text/5 transition-colors cursor-pointer"
+                    onClick={() => navigateToSection('edit')}
+                  >
                     <div className="p-2 bg-editor-primary/10 rounded-full">
                       <Film size={16} className="text-editor-primary" />
                     </div>
                     <span className="text-sm">Edit your video</span>
                   </li>
-                  <li className="flex items-center gap-3 p-2 rounded-md hover:bg-editor-text/5 transition-colors cursor-pointer">
+                  <li 
+                    className="flex items-center gap-3 p-2 rounded-md hover:bg-editor-text/5 transition-colors cursor-pointer"
+                    onClick={() => navigateToSection('preview')}
+                  >
                     <div className="p-2 bg-editor-primary/10 rounded-full">
                       <Play size={16} className="text-editor-primary" />
                     </div>
@@ -122,7 +216,7 @@ const HomePage = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {recentProjects.map(project => (
-                <div key={project.id}>
+                <div key={project.id} onClick={() => handleProjectClick(project)}>
                   <Card className="hover:border-editor-primary transition-colors cursor-pointer">
                     <CardHeader className="p-0">
                       <div className="aspect-video relative overflow-hidden rounded-t-lg">
@@ -154,7 +248,8 @@ const HomePage = () => {
               ))}
               
               <Card 
-                className="border-dashed border-editor-text/20 cursor-pointer hover:border-editor-primary/60 transition-colors"
+                className="border-dashed border-editor-text/20 cursor-pointer hover:border-editor-primary/60 transition-colors" 
+                onClick={handleNewProject}
               >
                 <CardContent className="flex flex-col items-center justify-center h-full py-10">
                   <div className="p-3 bg-editor-text/5 rounded-full mb-3">

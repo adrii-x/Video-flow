@@ -1,5 +1,6 @@
 
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,15 +13,33 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
+import { toast } from "sonner";
+
 interface SearchDialogProps {
   showSearch: boolean;
   setShowSearch: (show: boolean) => void;
 }
 
 const SearchDialog = ({ showSearch, setShowSearch }: SearchDialogProps) => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = React.useState("");
 
   const handleSearch = () => {
+    if (searchQuery.toLowerCase().includes("project")) {
+      navigate("/");
+      toast.success("Navigating to projects");
+    } else if (searchQuery.toLowerCase().includes("export")) {
+      navigate("/");
+      toast.success("Navigating to export page");
+    } else if (searchQuery.toLowerCase().includes("edit")) {
+      navigate("/");
+      toast.success("Navigating to editor");
+    } else {
+      toast.info("No matching results found");
+    }
+
+
+    
     setSearchQuery("");
     setShowSearch(false);
   };
@@ -33,7 +52,6 @@ const SearchDialog = ({ showSearch, setShowSearch }: SearchDialogProps) => {
     }
   };
 
-
   return (
     <Dialog open={showSearch} onOpenChange={setShowSearch}>
       <DialogTrigger asChild>
@@ -41,7 +59,7 @@ const SearchDialog = ({ showSearch, setShowSearch }: SearchDialogProps) => {
           <Search className="text-editor-text-subtle" />
         </Button>
       </DialogTrigger>
-      
+
       <DialogContent className="bg-editor-surface border-editor-text/10">
         <DialogHeader>
           <DialogTitle className="text-editor-text">Search</DialogTitle>
@@ -54,6 +72,7 @@ const SearchDialog = ({ showSearch, setShowSearch }: SearchDialogProps) => {
             placeholder="Search projects, exports..." 
             className="text-editor-text bg-editor-bg border-editor-text/20 focus:border-editor-primary"
             value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             onKeyUp={handleKeyPress}
           />
           <Button 
