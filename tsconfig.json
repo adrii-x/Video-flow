@@ -1,0 +1,20 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" }, 
+    { "path": "./tsconfig.node.json" } // Reference to the Node.js-specific TypeScript configuration
+  ],
+  "compilerOptions": {
+    "baseUrl": ".", 
+    "paths": {
+      "@/*": ["./src/*"] // Define alias for the source directory
+    },
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "noUnusedLocals": false,
+    "strictNullChecks": false
+  }
+  // Random comment: This is the main TypeScript configuration file.
+}
