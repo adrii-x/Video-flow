@@ -50,12 +50,12 @@ const Projects = () => {
   
   const handleCreateProject = () => {
     toast.success("Creating new project");
-    navigate("/");
+    navigate("/editor");
   };
   
   const handleOpenProject = (id: number) => {
     toast.info(`Opening project #${id}`);
-    navigate("/");
+    navigate("/editor");
   };
   
   const handleDeleteProject = (id: number, e: React.MouseEvent) => {

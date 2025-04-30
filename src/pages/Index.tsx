@@ -70,7 +70,7 @@ const HomePage = () => {
   
   const handleNewProject = () => {
     toast.success("Creating new project");
-    navigate('/');
+    navigate('/editor');
   };
 
   const navigateToSection = (section: string) => {
@@ -80,10 +80,12 @@ const HomePage = () => {
         toast.info("Navigating to upload page");
         break;
       case "edit":
-        navigate('/');
+        navigate('/editor');
+        toast.info("Navigating to editor");
         break;
       case "preview":
-        navigate('/');
+        navigate('/export');
+        toast.info("Navigating to export page");
         break;
       default:
         break;
@@ -93,7 +95,7 @@ const HomePage = () => {
   const handleProjectClick = (project: any) => {
     // Store selected project in localStorage for use in editor
     localStorage.setItem('selectedProject', JSON.stringify(project));
-    navigate('/');
+    navigate('/editor');
     toast.success(`Opening project: ${project.title}`);
   };
   
@@ -144,7 +146,8 @@ const HomePage = () => {
                   <Button 
                     className="flex items-center gap-2 bg-editor-text/5 text-editor-primary hover:bg-gradient-to-r hover:from-editor-primary hover:to-editor-secondary hover:text-white transition-colors"
                     onClick={() => {
-                      navigate('/');
+                      toast.success("Starting editor");
+                      navigate('/editor');
                     }}
                   >
                     <Play size={16} />

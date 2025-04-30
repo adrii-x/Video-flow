@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Home, Film, FolderOpen, Settings, Upload, Share2, Download, Menu } from "lucide-react";
