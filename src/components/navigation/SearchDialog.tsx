@@ -26,13 +26,13 @@ const SearchDialog = ({ showSearch, setShowSearch }: SearchDialogProps) => {
 
   const handleSearch = () => {
     if (searchQuery.toLowerCase().includes("project")) {
-      navigate("/");
+      navigate("/projects");
       toast.success("Navigating to projects");
     } else if (searchQuery.toLowerCase().includes("export")) {
-      navigate("/");
+      navigate("/export");
       toast.success("Navigating to export page");
     } else if (searchQuery.toLowerCase().includes("edit")) {
-      navigate("/");
+      navigate("/editor");
       toast.success("Navigating to editor");
     } else {
       toast.info("No matching results found");

@@ -26,7 +26,6 @@ const buttonVariants = cva(
         icon: "h-10 w-10",
       },
     },
-    //
     defaultVariants: {
       variant: "default",
       size: "default",
@@ -49,10 +48,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       />
-      //
     )
   }
 )
 Button.displayName = "Button"
-
+//
 export { Button, buttonVariants }

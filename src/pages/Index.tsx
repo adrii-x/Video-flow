@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import UploadArea from "@/components/upload/UploadArea";
 import Header from "@/components/navigation/Header";
+import Sidebar from "@/components/navigation/Sidebar";
 import { toast } from "sonner";
 
 // Mock data for project
@@ -69,7 +70,7 @@ const HomePage = () => {
   
   const handleNewProject = () => {
     toast.success("Creating new project");
-    navigate('/editor');
+    navigate('/');
   };
 
   const navigateToSection = (section: string) => {
@@ -79,12 +80,10 @@ const HomePage = () => {
         toast.info("Navigating to upload page");
         break;
       case "edit":
-        navigate('/editor');
-        toast.info("Navigating to editor");
+        navigate('/');
         break;
       case "preview":
-        navigate('/export');
-        toast.info("Navigating to export page");
+        navigate('/');
         break;
       default:
         break;
@@ -94,12 +93,13 @@ const HomePage = () => {
   const handleProjectClick = (project: any) => {
     // Store selected project in localStorage for use in editor
     localStorage.setItem('selectedProject', JSON.stringify(project));
-    navigate('/editor');
+    navigate('/');
     toast.success(`Opening project: ${project.title}`);
   };
   
   return (
     <div className="min-h-screen flex">
+      <Sidebar activeItem="home" />
       
       <div className="flex-1">
         <Header />
@@ -144,8 +144,7 @@ const HomePage = () => {
                   <Button 
                     className="flex items-center gap-2 bg-editor-text/5 text-editor-primary hover:bg-gradient-to-r hover:from-editor-primary hover:to-editor-secondary hover:text-white transition-colors"
                     onClick={() => {
-                      toast.success("Starting editor");
-                      navigate('/editor');
+                      navigate('/');
                     }}
                   >
                     <Play size={16} />
