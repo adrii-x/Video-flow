@@ -560,9 +560,9 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({
                 onChange={handleVolumeChange}
                 className="w-20 accent-editor-primary relative z-10 opacity-70 hover:opacity-100 transition-opacity"
               />
-              <div className="absolute top-1/2 left-0 right-0 h-1 -translate-y-1/2 bg-editor-text/10 rounded-full pointer-events-none">
+              <div className="absolute top-1/2 left-0 right-0 h-1 -translate-y-1/2  rounded-full pointer-events-none">
                 <div 
-                  className="h-full bg-editor-primary rounded-full"
+                  className="h-full  rounded-full"
                   style={{ width: `${volume * 100}%` }}
                 ></div>
               </div>

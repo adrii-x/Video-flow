@@ -393,7 +393,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
         
         <TabsContent value="audio" className="space-y-4">
           <div>
-            <label className="text-sm text-editor-text-subtle block mb-2">Volume: {volume}%</label>
+            <label className="text-sm  block mb-2">Volume: {volume}%</label>
             <div className="relative mt-2">
               <Slider 
                 value={[volume]} 
@@ -405,7 +405,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
               />
               <div className="absolute left-0 right-0 -top-1 h-2 rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-editor-primary/20"
+                  className="h-full "
                   style={{ width: `${volume}%` }}
                 ></div>
               </div>
