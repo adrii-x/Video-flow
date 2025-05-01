@@ -84,7 +84,7 @@ const Share = () => {
                   <input 
                     type="text"
                     readOnly
-                    value="https://videoflow.app/share/project-123456"
+                    value="https://video-flow-git-main-adrians-projects-2f7551db.vercel.app"
                     className="flex-1 bg-editor-bg border border-editor-text/20 rounded-l px-4 py-2 text-editor-text"
                   />
                   <button 
