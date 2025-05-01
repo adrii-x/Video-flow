@@ -14,7 +14,7 @@ const Share = () => {
   });
   
   const handleCopyLink = () => {
-    navigator.clipboard.writeText("https://videoflow.app/share/project-123456").then(() => {
+    navigator.clipboard.writeText("https://video-flow-git-main-adrians-projects-2f7551db.vercel.app").then(() => {
       setCopied(true);
       toast.success("Link copied to clipboard!");
       setTimeout(() => setCopied(false), 2000);
@@ -22,7 +22,7 @@ const Share = () => {
   };
   
   const handleShare = (platform: string) => {
-    const shareUrl = "https://videoflow.app/share/project-123456";
+    const shareUrl = "https://video-flow-git-main-adrians-projects-2f7551db.vercel.app";
     let shareLink = "";
     
     switch(platform) {
